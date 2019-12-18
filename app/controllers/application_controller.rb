@@ -8,7 +8,6 @@ class App < Sinatra::Base
     erb :'super_hero'
   end
 
-  # App POST /teams submits the form
   post '/teams' do
 
     @team = Team.new(params[:team])
