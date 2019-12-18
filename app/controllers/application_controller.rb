@@ -1,23 +1,18 @@
-require 'sinatra/base'
+set :views, Proc.new { File.join(root, "../views/") }
 
-class App < Sinatra::Base
+    get "/" do
+      erb :super_hero
+    end
 
-    set :views, Proc.new { File.join(root, "../views/") }
+    post "/teams" do
+      @team = Team.new(params)
 
-  get '/' do 
-        erb :super_hero
-    end 
+      params[:team][:members].each do |hero|
+        Hero.new(hero)
+      end
 
-    post '/teams' do
-        @team = Team.new(name: params[:team][:name], motto: params[:team][:motto])
-        members = params[:team][:members]
+      @members = Hero.all
 
-        members.each do |member_params|
-          SuperHero.new({name: member_params[:name], power: member_params[:power], bio: member_params[:bio]})
-        end
-        @super_heroes = SuperHero.all
-
-        erb :team
-      end    
-
+      erb :team
+    end
 end
